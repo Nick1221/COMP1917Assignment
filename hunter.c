@@ -8,33 +8,28 @@
 #include <time.h>
 
 LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
+LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
+
 
 void decideHunterMove(HunterView gameState)
 {
-    // TODO ...
-    // Replace the line below by something better
-    //registerBestPlay("GE","I'm on holiday in Geneva");
-
-    // Original Code below
-
-    //Determine character abbreviation
-    //PlayerID characterID = whoAmI(gameState);
 
     //Determine all possible moves
     int numLocations;
     LocationID *possibleDestinations; 
     possibleDestinations = whereCanIgo(gameState, &numLocations, 1, 1, 1);
 
-    //Make stupid move
+    //Make a move at random
     randomMove(gameState, possibleDestinations, numLocations);
 
     //Make a single-step move
-
+    singleMove(gameState, possibleDestinations, numLocations);
 
 
     
 }
-    
+ 
+//Make a move at random from all possible moves   
 LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations) 
 {
 
@@ -49,7 +44,7 @@ LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, in
 
 
 //Make a move if Dracula's current location is within the Hunter's possible moves    
-LocationID singleMove(HunterView gameState)
+LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, int numLocations) 
 {
     //Determine where Dracula is
     LocationID draculaLocation;
