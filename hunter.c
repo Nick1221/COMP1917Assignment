@@ -7,10 +7,12 @@
 #include "HunterView.h"
 #include <time.h>
 
+//Function Prototypes
 LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
 LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
+LocationID shortestMove((HunterView gameState, *LocationID possibleDestinations, int numLocations);
 
-
+//"Main" Function
 void decideHunterMove(HunterView gameState)
 {
 
@@ -24,6 +26,9 @@ void decideHunterMove(HunterView gameState)
 
     //Make a single-step move
     singleMove(gameState, possibleDestinations, numLocations);
+
+    //Make a move in the shortest path towards Dracula
+    shortestMove(gameState, possibleDestinations, numLocations);
 
 
     
@@ -39,6 +44,7 @@ LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, in
     //Register Play
     registerBestPlay(idToAbbrev(possibleDestinations[randomDestination]), "Random Move...");
 
+    //Return chosen destination
     return possibleDestinations[randomDestination];
 }
 
@@ -50,6 +56,7 @@ LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, in
     LocationID draculaLocation;
     draculaLocation = whereIs(gameState, PLAYER_DRACULA);
 
+    //Loop through possibleDestinations to find a match for Dracula's location
     int i;
     for (i = 0; i < numLocations; i++) {
         if (draculaLocation = possibleDestinations[i]) {
@@ -58,5 +65,14 @@ LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, in
         }
     }
 
+    //Return if no match is found
     return UNKNOWN_LOCATION;
 }
+
+//Make a move that is the first step of the shortest path to dracula
+LocationID shortestMove((HunterView gameState, *LocationID possibleDestinations, int numLocations)
+{
+    //Determine where Dracula is
+    LocationID draculaLocation;
+    draculaLocation = whereIs(gameState, PLAYER_DRACULA);
+}    
