@@ -7,7 +7,7 @@
 #include "HunterView.h"
 #include <time.h>
 
-LocationID randomMove(HunterView gameState);
+LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
 
 void decideHunterMove(HunterView gameState)
 {
@@ -19,25 +19,49 @@ void decideHunterMove(HunterView gameState)
 
     //Determine character abbreviation
     //PlayerID characterID = whoAmI(gameState);
-    
-    //Make stupid move
-    LocationID destinationID = randomMove(gameState);
 
-    //printf("destinationID is: %d\n", destinationID);
-    registerBestPlay(idToAbbrev(destinationID), "");
+    //Determine all possible moves
+    int numLocations;
+    LocationID *possibleDestinations; 
+    possibleDestinations = whereCanIgo(gameState, &numLocations, 1, 1, 1);
+
+    //Make stupid move
+    randomMove(gameState, possibleDestinations, numLocations);
+
+    //Make a single-step move
+
+
+
     
 }
     
-LocationID randomMove(HunterView gameState) 
+LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations) 
 {
-    int numLocations;
-    //LocationID possibleDestinations[NUM_MAP_LOCATIONS]; 
-    LocationID *possibleDestinations; 
-    possibleDestinations = whereCanIgo(gameState, &numLocations, 1, 1, 1);
 
     srand(time(NULL));
     int randomDestination = rand() % numLocations;
 
+    //Register Play
+    registerBestPlay(idToAbbrev(possibleDestinations[randomDestination]), "Random Move...");
+
     return possibleDestinations[randomDestination];
 }
-    
+
+
+//Make a move if Dracula's current location is within the Hunter's possible moves    
+LocationID singleMove(HunterView gameState)
+{
+    //Determine where Dracula is
+    LocationID draculaLocation;
+    draculaLocation = whereIs(gameState, PLAYER_DRACULA);
+
+    int i;
+    for (i = 0; i < numLocations; i++) {
+        if (draculaLocation = possibleDestinations[i]) {
+            registerBestPlay(idToAbbrev(possibleDestinations[i]), "Single Move...");
+            return possibleDestinations[i];
+        }
+    }
+
+    return UNKNOWN_LOCATION;
+}
