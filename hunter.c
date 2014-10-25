@@ -70,7 +70,7 @@ LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, in
 }
 
 //Make a move that is the first step of the shortest path to dracula
-LocationID shortestMove((HunterView gameState, *LocationID possibleDestinations, int numLocations)
+LocationID shortestMove(HunterView gameState, *LocationID possibleDestinations, int numLocations)
 {
     //Determine where Dracula is
     LocationID draculaLocation;
