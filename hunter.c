@@ -8,6 +8,10 @@
 #include <time.h>
 #include "Map.h"
 #include <assert.h>
+
+//Enable DEBUG mode (0 = FALSE, 1 = TRUE)
+#define DEBUG 0 
+
 //Function Prototypes
 LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
 LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
@@ -46,7 +50,9 @@ LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], i
     registerBestPlay(idToAbbrev(possibleDestinations[randomDestination]), "Random Move...");
 
     //DEBUG
-    printf("randomMove successful\n");
+    if (DEBUG) {
+        printf("randomMove successful\n");
+    }
 
     //Return chosen destination
     return possibleDestinations[randomDestination];
@@ -70,7 +76,9 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
     }
 
     //DEBUG
-    printf("singleMove successful\n");
+    if (DEBUG) {
+        printf("singleMove successful\n");
+    }
 
     //Return if no match is found
     return UNKNOWN_LOCATION;
@@ -80,21 +88,27 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
 LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations)
 {
     //DEBUG
-    printf("shortestMove entered\n");
-
-    //Determine where Dracula is
-    LocationID draculaLocation;
-    draculaLocation = whereIs(gameState, PLAYER_DRACULA);
-
-    //DEBUG
-    printf("draculaLocation is: %d\n", draculaLocation);
+    if (DEBUG) {
+        printf("shortestMove entered\n");
+    }
 
     //Determine where Player is
     LocationID hunterLocation;
     hunterLocation = whereIs(gameState, whoAmI(gameState));
 
     //DEBUG
-    printf("hunterLocation is: %d\n", hunterLocation);
+    if (DEBUG) {
+        printf("hunterLocation is: %d\n", hunterLocation);
+    }
+
+    //Determine where Dracula is
+    LocationID draculaLocation;
+    draculaLocation = whereIs(gameState, PLAYER_DRACULA);
+
+    //DEBUG
+    if (DEBUG) {
+        printf("draculaLocation is: %d\n", draculaLocation);
+    }
 
     //Generate map of Europe
     Map europe;
@@ -102,14 +116,18 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
     assert(europe != NULL);
 
     //DEBUG
-    printf("europe is: %p\n", europe);
+    if (DEBUG) {
+        printf("europe is: %p\n", europe);
+    }
 
     //Initialise path[] and trans[]
     LocationID path[NUM_MAP_LOCATIONS];
     TransportID trans[NUM_MAP_LOCATIONS];
 
     //DEBUG
-    printf("path[] and trans[] initialised\n");
+    if (DEBUG) {
+        printf("path[] and trans[] initialised\n");
+    }
 
     //Return first step along the route to Dracula, or UNKNOWN_LOCATION if invalid
     if (hunterLocation >= MIN_MAP_LOCATION && hunterLocation <= MAX_MAP_LOCATION) {
@@ -118,19 +136,25 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
         shortestPath(europe, hunterLocation, draculaLocation, path, trans);
 
         //DEBUG
-        printf("shortestPath called\n");
+        if (DEBUG) {
+            printf("shortestPath called\n");
+        }
 
         //Register result
         registerBestPlay(idToAbbrev(path[1]), "Shortest Move...");
 
         //DEBUG
-        printf("hunterLocation is: %d; draculaLocation is: %d\n", hunterLocation, draculaLocation);
-        printf("path[0] is: %d; path[1] is: %d\n", path[0], path[1]);
-        printf("shortestMove successful\n");
+        if (DEBUG) {
+            printf("hunterLocation is: %d; draculaLocation is: %d\n", hunterLocation, draculaLocation);
+            printf("path[0] is: %d; path[1] is: %d\n", path[0], path[1]);
+            printf("shortestMove successful\n");            
+        }
 
         //Return first step
         return path[1];
+
     } else {
+        
         //Return invalid result
         return UNKNOWN_LOCATION;
     }
