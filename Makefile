@@ -4,7 +4,7 @@
 CC = gcc
 CFLAGS = -Wall -Werror
 # do not change the following line
-BINS = dracula hunter 
+BINS = dracula hunter pl path
 # add any other *.o files that your system requires
 # (and add their dependencies below after DracView.o)
 # if you're not using Map.o or Places.o, you can remove them
@@ -34,11 +34,11 @@ DracView.o : DracView.c Globals.h DracView.h
 # if you use other ADTs, add dependencies for them here
 Queue.o : Queue.c Queue.h Item.h
 
-#pl : pl.o Places.o
-#pl.o : pl.c Places.h
+pl : pl.o Places.o
+pl.o : pl.c Places.h
 
-#path : path.o Map.o Places.o Queue.o
-#path.o : path.c Map.c Places.h 
+path : path.o Map.o Places.o Queue.o
+path.o : path.c Map.c Places.h 
 
 clean :
 	rm -f $(BINS) *.o core 
