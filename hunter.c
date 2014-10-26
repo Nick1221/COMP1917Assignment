@@ -1,14 +1,15 @@
 // hunter.c
 // Implementation of your "Fury of Dracula" hunter AI
 
+#include <assert.h>
+#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "Game.h"
 #include "HunterView.h"
-#include <time.h>
 #include "Map.h"
-#include <assert.h>
-#include "hunter.h"
+//#include "hunter.h"
+#include "Places.h"
 
 //Enable DEBUG mode (0 = FALSE, 1 = TRUE)
 #define DEBUG 0 
