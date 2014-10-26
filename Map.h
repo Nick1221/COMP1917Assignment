@@ -23,6 +23,7 @@ void disposeMap(Map g);
 void showMap(Map g); 
 int  numV(Map g);
 int  numE(Map g, TransportID t);
+int shortestPath(Map g, LocationID start, LocationID end, LocationID path[], TransportID trans[]);
 
 // returns the distance of a direct edge of transport t FROM a TO b
 // or NO_EDGE if no such edge exists

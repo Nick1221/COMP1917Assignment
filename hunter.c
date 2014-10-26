@@ -8,9 +8,9 @@
 #include <time.h>
 
 //Function Prototypes
-LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
-LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, int numLocations);
-LocationID shortestMove((HunterView gameState, *LocationID possibleDestinations, int numLocations);
+LocationID randomMove(HunterView gameState, LocationID* possibleDestinations, int numLocations);
+LocationID singleMove(HunterView gameState, LocationID* possibleDestinations, int numLocations);
+LocationID shortestMove(HunterView gameState, LocationID* possibleDestinations, int numLocations);
 
 //"Main" Function
 void decideHunterMove(HunterView gameState)
@@ -35,7 +35,7 @@ void decideHunterMove(HunterView gameState)
 }
  
 //Make a move at random from all possible moves   
-LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, int numLocations) 
+LocationID randomMove(HunterView gameState, LocationID* possibleDestinations, int numLocations) 
 {
 
     srand(time(NULL));
@@ -50,7 +50,7 @@ LocationID randomMove(HunterView gameState, *LocationID possibleDestinations, in
 
 
 //Make a move if Dracula's current location is within the Hunter's possible moves    
-LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, int numLocations) 
+LocationID singleMove(HunterView gameState, LocationID* possibleDestinations, int numLocations) 
 {
     //Determine where Dracula is
     LocationID draculaLocation;
@@ -59,7 +59,7 @@ LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, in
     //Loop through possibleDestinations to find a match for Dracula's location
     int i;
     for (i = 0; i < numLocations; i++) {
-        if (draculaLocation = possibleDestinations[i]) {
+        if (draculaLocation == possibleDestinations[i]) {
             registerBestPlay(idToAbbrev(possibleDestinations[i]), "Single Move...");
             return possibleDestinations[i];
         }
@@ -70,9 +70,11 @@ LocationID singleMove(HunterView gameState, *LocationID possibleDestinations, in
 }
 
 //Make a move that is the first step of the shortest path to dracula
-LocationID shortestMove(HunterView gameState, *LocationID possibleDestinations, int numLocations)
+LocationID shortestMove(HunterView gameState, LocationID* possibleDestinations, int numLocations)
 {
     //Determine where Dracula is
     LocationID draculaLocation;
     draculaLocation = whereIs(gameState, PLAYER_DRACULA);
+
+    return draculaLocation; //To shut up gcc
 }    
