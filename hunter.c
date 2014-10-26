@@ -8,14 +8,10 @@
 #include <time.h>
 #include "Map.h"
 #include <assert.h>
+#include "hunter.h"
 
 //Enable DEBUG mode (0 = FALSE, 1 = TRUE)
 #define DEBUG 0 
-
-//Function Prototypes
-LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
-LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
-LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
 
 //"Main" Function
 void decideHunterMove(HunterView gameState)
@@ -32,9 +28,21 @@ void decideHunterMove(HunterView gameState)
     //Make a single-step move
     singleMove(gameState, possibleDestinations, numLocations);
 
-    //Make a move in the shortest path towards Dracula
-    shortestMove(gameState, possibleDestinations, numLocations);
+    //Generate map of Europe
+    Map europe;
+    europe = newMap();
+    assert(europe != NULL);
 
+    //DEBUG
+    if (DEBUG) {
+        printf("europe is: %p\n", europe);
+    }
+
+    //Make a move in the shortest path towards Dracula
+    shortestMove(gameState, possibleDestinations, numLocations, europe);
+
+    //Make a move in the shortest path towards Dracula's last known location (within trail)
+    lastKnownMove(gameState, possibleDestinations, numLocations, europe);
 
     
 }
@@ -85,7 +93,7 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
 }
 
 //Make a move that is the first step of the shortest path to dracula
-LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations)
+LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe)
 {
     //DEBUG
     if (DEBUG) {
@@ -108,16 +116,6 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
     //DEBUG
     if (DEBUG) {
         printf("draculaLocation is: %d\n", draculaLocation);
-    }
-
-    //Generate map of Europe
-    Map europe;
-    europe = newMap();
-    assert(europe != NULL);
-
-    //DEBUG
-    if (DEBUG) {
-        printf("europe is: %p\n", europe);
     }
 
     //Initialise path[] and trans[]
@@ -154,8 +152,83 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
         return path[1];
 
     } else {
-        
+
         //Return invalid result
         return UNKNOWN_LOCATION;
     }
 }    
+
+//Move to Dracula's last known location within the trail
+LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe)
+{
+    //Initialise path[] and trans[]
+    LocationID path[NUM_MAP_LOCATIONS];
+    TransportID trans[NUM_MAP_LOCATIONS];
+
+    //DEBUG
+    if (DEBUG) {
+        printf("path[] and trans[] initialised\n");
+    }
+
+
+    //DEBUG
+    if (DEBUG) {
+        printf("lastKnownMove entered\n");
+    }
+
+    //Determine where Player is
+    LocationID hunterLocation;
+    hunterLocation = whereIs(gameState, whoAmI(gameState));
+
+    //DEBUG
+    if (DEBUG) {
+        printf("hunterLocation is: %d\n", hunterLocation);
+    }
+
+    //Determine where Dracula was last known to be
+    LocationID draculaLocation;
+    LocationID draculaTrail[TRAIL_SIZE];
+    giveMeTheTrail(gameState, PLAYER_DRACULA, draculaTrail);
+    int i;
+    for (i = 0; i < TRAIL_SIZE; i++) {
+        draculaLocation = draculaTrail[i];
+        if (hunterLocation >= MIN_MAP_LOCATION && hunterLocation <= MAX_MAP_LOCATION) {
+            break;
+        }
+    }
+
+    //DEBUG 
+    if (DEBUG) {
+        printf("draculaLocation is: %d\n", draculaLocation);
+    }
+
+    //Return first step along the route to Dracula, or UNKNOWN_LOCATION if invalid
+    if (hunterLocation >= MIN_MAP_LOCATION && hunterLocation <= MAX_MAP_LOCATION) {
+
+        //Call shortestPath
+        shortestPath(europe, hunterLocation, draculaLocation, path, trans);
+
+        //DEBUG
+        if (DEBUG) {
+            printf("shortestPath called\n");
+        }
+
+        //Register result
+        registerBestPlay(idToAbbrev(path[1]), "Last Known Move...");
+
+        //DEBUG
+        if (DEBUG) {
+            printf("hunterLocation is: %d; draculaLocation is: %d\n", hunterLocation, draculaLocation);
+            printf("path[0] is: %d; path[1] is: %d\n", path[0], path[1]);
+            printf("lastKnownMove successful\n");            
+        }
+
+        //Return first step
+        return path[1];
+
+    } else {
+
+        //Return invalid result
+        return UNKNOWN_LOCATION;
+    }
+}
