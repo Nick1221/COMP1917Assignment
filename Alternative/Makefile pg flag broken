@@ -2,7 +2,7 @@
 
 # change these to suit your local C environment
 CC = gcc
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Werror -pg
 # do not change the following line
 BINS = dracula hunter pl path
 # add any other *.o files that your system requires
@@ -10,33 +10,46 @@ BINS = dracula hunter pl path
 # if you're not using Map.o or Places.o, you can remove them
 OBJS = GameView.o Map.o Places.o Queue.o
 # add whatever system libraries you need here (e.g. -lm)
-LIBS =
+LIBS = 
 
 all : $(BINS)
 
 dracula : dracPlayer.o dracula.o DracView.o $(OBJS) $(LIBS)
 hunter : hunterPlayer.o hunter.o HunterView.o $(OBJS) $(LIBS)
-pl : pl.o Places.o
-path : path.o Map.o Places.o Queue.o
 
-dracPlayer.o : player.c Game.h DracView.h dracula.h
+dracPlayer.o : player.c Game.h DracView.h dracula.h 
 	$(CC) $(CFLAGS) -DI_AM_DRACULA -c player.c -o dracPlayer.o
 
-hunterPlayer.o : player.c Game.h HunterView.h hunter.h
+hunterPlayer.o : player.c Game.h HunterView.h hunter.h 
 	$(CC) $(CFLAGS) -c player.c -o hunterPlayer.o
 
+
 dracula.o : dracula.c Game.h DracView.h
+	$(CC) $(CFLAGS) -c dracula.c -o dracula.o
 hunter.o : hunter.c Game.h HunterView.h
+	$(CC) $(CFLAGS) -c hunter.c -o hunter.o
 Places.o : Places.c Places.h
-Map.o : Map.c Map.h Places.h
+	$(CC) $(CFLAGS) -c Places.c -o Places.o
+Map.o : Map.c Map.h Places.h Queue.h
+	$(CC) $(CFLAGS) -c Map.c -o Map.o
 GameView.o : GameView.c Globals.h GameView.h
+	$(CC) $(CFLAGS) -c GameView.c -o GameView.o
 HunterView.o : HunterView.c Globals.h HunterView.h
+	$(CC) $(CFLAGS) -c HunterView.c -o HunterView.o
 DracView.o : DracView.c Globals.h DracView.h
+	$(CC) $(CFLAGS) -c DracView.c -o DracView.o
 # if you use other ADTs, add dependencies for them here
 Queue.o : Queue.c Queue.h Item.h
-pl.o : pl.c Places.h
-path.o : path.c Map.c Places.h
+	$(CC) $(CFLAGS) -c Queue.c -o Queue.o
+
+pl : pl.o Places.o $(OBJS) $(LIBS)
+pl.o : pl.c Places.h 
+	$(CC) $(CFLAGS) -c pl.c -o pl.o
+
+path : path.o Map.o Places.o Queue.o $(OBJS) $(LIBS)
+path.o : path.c Map.c Places.h 
+	$(CC) $(CFLAGS) -c path.c -o path.o
 
 clean :
-	rm -f $(BINS) *.o core
+	rm -f $(BINS) *.o core 
 
