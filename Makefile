@@ -4,20 +4,20 @@
 CC = gcc
 CFLAGS = -Wall -Werror
 # do not change the following line
-BINS = dracula hunter pl path
+BINS = dracula hunter
 # add any other *.o files that your system requires
 # (and add their dependencies below after DracView.o)
 # if you're not using Map.o or Places.o, you can remove them
-OBJS = GameView.o Map.o Places.o Queue.o
+OBJS = GameView.o Map.o Places.o 
 # add whatever system libraries you need here (e.g. -lm)
-LIBS =
+LIBS = 
 
 all : $(BINS)
 
 dracula : dracPlayer.o dracula.o DracView.o $(OBJS) $(LIBS)
 hunter : hunterPlayer.o hunter.o HunterView.o $(OBJS) $(LIBS)
 pl : pl.o Places.o
-path : path.o Map.o Places.o Queue.o
+path : path.o Map.o Places.o 
 
 dracPlayer.o : player.c Game.h DracView.h dracula.h
 	$(CC) $(CFLAGS) -DI_AM_DRACULA -c player.c -o dracPlayer.o
@@ -33,9 +33,6 @@ GameView.o : GameView.c Globals.h GameView.h
 HunterView.o : HunterView.c Globals.h HunterView.h
 DracView.o : DracView.c Globals.h DracView.h
 # if you use other ADTs, add dependencies for them here
-Queue.o : Queue.c Queue.h Item.h
-pl.o : pl.c Places.h
-path.o : path.c Map.c Places.h
 
 clean :
 	rm -f $(BINS) *.o core
