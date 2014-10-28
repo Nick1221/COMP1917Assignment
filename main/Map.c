@@ -7,10 +7,8 @@
 #include <stdlib.h>
 #include "Map.h"
 #include "Places.h"
-//#include "Queue.h"
-
-#define TRUE 1
-#define FALSE 0
+#include "Globals.h"
+#include "Queue.h"
 
 typedef struct vNode *VList;
 
@@ -28,33 +26,6 @@ struct MapRep {
     // immediate edges: num edges via each mode of transport
     int adjmat[NUM_TRANSPORT][NUM_MAP_LOCATIONS][NUM_MAP_LOCATIONS];
 };
-
-//Queue.c Bypass
-
-typedef LocationID Item;
-
-#define ItemCopy(i)     (i)
-#define ItemEQ(i1,i2)   (i1 == i2)
-#define ItemShow(i)     printf("(%d)", i)
-
-typedef struct QueueRep *Queue;
-
-Queue newQueue(); // create new empty queue
-void dropQueue(Queue); // free memory used by queue
-void showQueue(Queue); // display as 3 > 5 > 4 > ...
-void QueueJoin(Queue,Item); // add item on queue
-Item QueueLeave(Queue); // remove item from queue
-int QueueIsEmpty(Queue); // check for no items
-
-typedef struct QueueNode {
-  Item value;
-  struct QueueNode *next;
-} QueueNode;
-
-typedef struct QueueRep {
-  QueueNode *head;  // ptr to first node
-  QueueNode *tail;  // ptr to last node
-} QueueRep;
 
 
 static void addConnections(Map);
@@ -192,6 +163,116 @@ int numE(Map g, TransportID type)
 int  getDist(Map g, TransportID t, LocationID a, LocationID b) {
     return g->adjmat[t][a][b];
 }
+
+// Finds shortest path between start and end (path length = #edges)
+// Sets path[] to contain start and end, and all intermediate vertices
+// Sets trans[] to indicate the mode of transport between vertices
+// Returns 0 if no path can be found
+// Returns number of vertices in path otherwise
+int shortestPath(Map g, LocationID start, LocationID end, LocationID path[], TransportID trans[])
+{
+   // TODO: replace the code with a shortest path algorithm
+
+   //Ensure Valid Inputs
+   assert(g != NULL);
+   assert(path != NULL);
+   assert(trans != NULL);
+   
+   // Create necessary variables
+   LocationID *visited = calloc(g->nV, sizeof(int));     //Array of visited nodes (all set to 0)
+   LocationID *st = calloc(g->nV, sizeof(int));
+   LocationID *stTrans = calloc(g->nV, sizeof(int));
+   Queue q = newQueue();
+   QueueJoin(q, start);
+   int isLocated = FALSE;
+
+   // Fill path with -1s to calculate length later
+   int i;
+   for (i = 0; i < g->nV; i++) {
+      path[i] = -1;
+   }
+
+   // Traverse the graph
+   while (QueueIsEmpty(q) == FALSE && isLocated == FALSE) {
+
+      // Dequeue the first Location in the Queue, and store temporarily
+      LocationID curr = QueueLeave(q);
+      VList temp = g->connections[curr];
+
+      // Loop through the list to find all neighbours
+      while (temp != NULL) {
+
+         //Check if this Location has been visited prior
+         if (visited[temp->v] == TRUE) {
+            temp = temp->next;
+            continue;
+         }
+
+         // Record location in the st array (shows order of visit)
+         st[temp->v] = curr;
+         stTrans[temp->v] = temp->type;
+
+         // Abort loop if the end Location has been reached
+         if (temp->v == end) {
+            isLocated = TRUE;
+            stTrans[end] = temp->type;
+            break;
+         }
+
+         // Add to the Queue (can only add if not yet visited)
+         QueueJoin(q, temp->v);
+         visited[temp->v] = TRUE;
+
+         // Progress through the list
+         temp = temp->next;
+
+      }
+   }
+
+   // Generate the route (also determines length of path)
+   LocationID x;
+   TransportID y;
+   if (isLocated == FALSE) {
+      return 0;
+   } else {
+      for (x = end, y = stTrans[end], i = 0; x != start;
+          x = st[x], y = stTrans[x], i++) {
+         path[i] = x;
+         trans[i] = y;
+      }
+      i++;
+      path[i] = start;
+      trans[i] = 0;
+   }
+
+
+   // Reverse order of arrays
+   int j;
+   for (j = 0; j < (i+1)/2; j++){
+      x = path[j];
+      y = trans[j];
+      path[j] = path[i - j - 1];
+      trans[j] = trans[i - j - 1];
+      path[i - j - 1] = x;
+      trans[i - j - 1] = y;
+   }   
+
+   // Free memory
+   free(visited);
+   free(st);
+   free(stTrans);
+   dropQueue(q);
+
+   //DEBUG
+   for (j = 0; j < i; j++ ) {
+      printf("Location %d\n", path[j]);
+   }
+
+   // Return length of path array
+   return i;
+
+}
+
 
 // Add edges to Graph representing map of Europe
 static void addConnections(Map g)
@@ -402,195 +483,5 @@ static void addConnections(Map g)
     addLink(g, MEDITERRANEAN_SEA, TYRRHENIAN_SEA, BOAT);
     addLink(g, NAPLES, TYRRHENIAN_SEA, BOAT);
     addLink(g, ROME, TYRRHENIAN_SEA, BOAT);
-}
-
-// Finds shortest path between start and end (path length = #edges)
-// Sets path[] to contain start and end, and all intermediate vertices
-// Sets trans[] to indicate the mode of transport between vertices
-// Returns 0 if no path can be found
-// Returns number of vertices in path otherwise
-int shortestPath(Map g, LocationID start, LocationID end, LocationID path[], TransportID trans[])
-{
-   // TODO: replace the code with a shortest path algorithm
-
-   //Ensure Valid Inputs
-   assert(g != NULL);
-   assert(path != NULL);
-   assert(trans != NULL);
-   
-   // Create necessary variables
-   LocationID *visited = calloc(g->nV, sizeof(int));     //Array of visited nodes (all set to 0)
-   LocationID *st = calloc(g->nV, sizeof(int));
-   LocationID *stTrans = calloc(g->nV, sizeof(int));
-   Queue q = newQueue();
-   QueueJoin(q, start);
-   int isLocated = FALSE;
-
-   // Fill path with -1s to calculate length later
-   int i;
-   for (i = 0; i < g->nV; i++) {
-      path[i] = -1;
-   }
-
-   // Traverse the graph
-   while (QueueIsEmpty(q) == FALSE && isLocated == FALSE) {
-
-      // Dequeue the first Location in the Queue, and store temporarily
-      LocationID curr = QueueLeave(q);
-      VList temp = g->connections[curr];
-
-      // Loop through the list to find all neighbours
-      while (temp != NULL) {
-
-         //Check if this Location has been visited prior
-         if (visited[temp->v] == TRUE) {
-            temp = temp->next;
-            continue;
-         }
-
-         // Record location in the st array (shows order of visit)
-         st[temp->v] = curr;
-         stTrans[temp->v] = temp->type;
-
-         // Abort loop if the end Location has been reached
-         if (temp->v == end) {
-            isLocated = TRUE;
-            stTrans[end] = temp->type;
-            break;
-         }
-
-         // Add to the Queue (can only add if not yet visited)
-         QueueJoin(q, temp->v);
-         visited[temp->v] = TRUE;
-
-         // Progress through the list
-         temp = temp->next;
-
-      }
-   }
-
-   // Generate the route (also determines length of path)
-   LocationID x;
-   TransportID y;
-   if (isLocated == FALSE) {
-      return 0;
-   } else {
-      for (x = end, y = stTrans[end], i = 0; x != start;
-          x = st[x], y = stTrans[x], i++) {
-         path[i] = x;
-         trans[i] = y;
-      }
-      i++;
-      path[i] = start;
-      trans[i] = 0;
-   }
-
-
-   // Reverse order of arrays
-   int j;
-   for (j = 0; j < (i+1)/2; j++){
-      x = path[j];
-      y = trans[j];
-      path[j] = path[i - j - 1];
-      trans[j] = trans[i - j - 1];
-      path[i - j - 1] = x;
-      trans[i - j - 1] = y;
-   }   
-
-   // Free memory
-   free(visited);
-   free(st);
-   free(stTrans);
-   dropQueue(q);
-
-   //DEBUG
-   for (j = 0; j < i; j++ ) {
-      printf("Location %d\n", path[j]);
-   }
-
-   // Return length of path array
-   return i;
-
-}
-
-
-//Queue.c bypass
-
-// create new empty Queue
-Queue newQueue()
-{
-  Queue q;
-  q = malloc(sizeof(QueueRep));
-  assert(q != NULL);
-  q->head = NULL;
-  q->tail = NULL;
-  return q;
-}
-
-// free memory used by Queue
-void dropQueue(Queue Q)
-{
-  QueueNode *curr, *next;
-  assert(Q != NULL);
-  // free list nodes
-  curr = Q->head;
-  while (curr != NULL) {
-    next = curr->next;
-    free(curr);
-    curr = next;
-  }
-  // free queue rep
-  free(Q);
-}
-
-// display as 3 > 5 > 4 > ...
-void showQueue(Queue Q)
-{
-  QueueNode *curr;
-  assert(Q != NULL);
-  // free list nodes
-  curr = Q->head;
-  while (curr != NULL) {
-    ItemShow(curr->value);
-    if (curr->next != NULL)
-      printf(">");
-    curr = curr->next;
-  }
-  printf("\n");
-}
-
-// add item at end of Queue 
-void QueueJoin(Queue Q, Item it)
-{
-  assert(Q != NULL);
-  QueueNode *new = malloc(sizeof(QueueNode));
-  assert(new != NULL);
-  new->value = ItemCopy(it);
-  new->next = NULL;
-  if (Q->head == NULL)
-    Q->head = new;
-  if (Q->tail != NULL)
-    Q->tail->next = new;
-  Q->tail = new;
-}
-
-// remove item from front of Queue
-Item QueueLeave(Queue Q)
-{
-  assert(Q != NULL);
-  assert(Q->head != NULL);
-  Item it = ItemCopy(Q->head->value);
-  QueueNode *old = Q->head;
-  Q->head = old->next;
-  if (Q->head == NULL)
-    Q->tail = NULL;
-  free(old);
-  return it;
-}
-
-// check for no items
-int QueueIsEmpty(Queue Q)
-{
-  return (Q->head == NULL);
 }
 
