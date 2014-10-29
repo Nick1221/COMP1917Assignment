@@ -47,7 +47,7 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
 //Move to Dracula's last known location within the trail
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-//LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
+LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
@@ -137,7 +137,7 @@ void decideHunterMove(HunterView gameState)
 
     //Make a move in the shortest path towards Dracula
     shortestMove(gameState, possibleDestinations, numLocations, europe);
-/*
+
     //Make a move in the shortest path towards Dracula's last known location (within trail)
     lastKnownMove(gameState, possibleDestinations, numLocations, europe);
 
@@ -145,7 +145,7 @@ void decideHunterMove(HunterView gameState)
     if (DEBUG) {
         printf("decideHunterMove exited\n");
     }
-*/
+
 }
  
 //Make a pre-determined move for the first round
@@ -300,7 +300,7 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
     }
 }    
 
-/*
+
 //Move to Dracula's last known location within the trail
 LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe)
 {
@@ -376,7 +376,7 @@ LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[]
     }
 }
 
-
+/*
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
