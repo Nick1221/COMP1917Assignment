@@ -11,7 +11,7 @@
 #include "Places.h"
 
 //Enable DEBUG mode (0 = FALSE, 1 = TRUE)
-#define DEBUG 1
+#define DEBUG 0
 
 //Set Health lower limit
 #define HEALTH_CRITICAL 2
@@ -52,12 +52,12 @@ LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[]
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
 //Returns the locationID correpsonding to the Location Initials registered
-//LocationID healthCriticalMove(HunterView gameState);
+LocationID healthCriticalMove(HunterView gameState);
 
 //Stay in the current location if research would be beneficial
 //If Dracula's past location is unknown, and the trail is full then conduct research
 //Returns the locationID correpsonding to the Location Initials registered
-//LocationID researchMove(HunterView gameState);
+LocationID researchMove(HunterView gameState);
 
 
 
@@ -114,7 +114,7 @@ void decideHunterMove(HunterView gameState)
 
     //Make a single-step move
     singleMove(gameState, possibleDestinations, numLocations);
-/*
+
     //Stay in the current location if health is low
     if (healthCriticalMove(gameState) == hunterLocation) {
         return;
@@ -124,7 +124,7 @@ void decideHunterMove(HunterView gameState)
     if (researchMove(gameState) == hunterLocation) {
         return;
     }
-*/
+
     //Generate map of Europe
     Map europe;
     europe = newMap();
@@ -376,7 +376,7 @@ LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[]
     }
 }
 
-/*
+
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
@@ -421,6 +421,8 @@ LocationID healthCriticalMove(HunterView gameState) {
     return UNKNOWN_LOCATION;
 
 }
+
+
 
 //Stay in the current location if research would be beneficial
 //If Dracula's past location is unknown, and the trail is full then conduct research
@@ -476,4 +478,4 @@ LocationID researchMove(HunterView gameState) {
     return hunterLocation;
 
 }
-*/
+
