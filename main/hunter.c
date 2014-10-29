@@ -74,11 +74,20 @@ void decideHunterMove(HunterView gameState)
     //DEBUG
     if (DEBUG) {
         printf("numLocations is: %d\n", numLocations);
+        int debugCounter;
+        for (debugCounter = 0; debugCounter < numLocations; debugCounter++) {
+            printf("possibleDestinations[%d] is: %d\n", debugCounter, possibleDestinations[debugCounter]);
+        }
     }
 
     //Determine where Player is
     LocationID hunterLocation;
     hunterLocation = whereIs(gameState, whoAmI(gameState));
+
+    //DEBUG
+    if (DEBUG) {
+        printf("hunterLocation is: %d\n", hunterLocation);
+    }
 
     //Make a move at random
     randomMove(gameState, possibleDestinations, numLocations);

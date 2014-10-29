@@ -1,6 +1,7 @@
 // Places.c ... implementation of Places
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include "Places.h"
@@ -139,6 +140,13 @@ int abbrevToID(char *abbrev)
 
 char *idToAbbrev(int p)
 {
-   assert(validPlace(p));
+   printf("\n");
+   printf("This is Places.c talking. Function: idToAbbrev\n");
+   printf("int p (the LocationID) is as follows: %d\n", p);
+   printf("\n");
+   //assert(validPlace(p));
+   if (p > MAX_MAP_LOCATION) {
+      return "-1";
+   }
    return places[p].abbrev;
 }
