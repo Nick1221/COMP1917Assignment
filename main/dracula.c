@@ -74,7 +74,7 @@ void decideDraculaMove(DracView gameState)
 			if (r == 1){ 
 				registerBestPlay("TP","Hello my delicious");
 			} else if (r == 0 && inTrail == 0){
-				registerBestPlay("D5","Hello my delicacy");		
+				registerBestPlay("TP","Hello my delicacy");		
 			} else if (r == 0 && inTrail == 1){
 				registerBestPlay("TP","Hello my dinner");
 			}
