@@ -33,7 +33,7 @@ DracView.o : DracView.c Globals.h DracView.h
 # if you use other ADTs, add dependencies for them here
 
 # Queue.c and assorted elements from Lab9
-Queue.o : Queue.c Queue.h Item.h
+Queue.o : Queue.c Queue.h Item.h  
 path : path.o Map.o Places.o Queue.o
 path.o : path.c Map.c Places.h 
 pl : pl.o Places.o
