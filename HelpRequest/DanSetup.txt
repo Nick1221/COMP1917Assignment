@@ -1,0 +1,17 @@
+Dan's Programming Setup
+=======================
+
+Operating System
+ - Windows 8.1 (64-bit)
+
+Text Editor
+ - Sublime v2.0.2
+ 
+Telnet/SSH CLient
+ - PuTTY (integrated into WinSCP)
+ 
+SCP/SFTP Client (File Transfer)
+ - WinSCP 5.5.3
+ 
+Version Control/File Collaboration
+ - GitHub for Windows 2.5.2
