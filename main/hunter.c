@@ -42,22 +42,22 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
 //Make a move that is the first step of the shortest path to dracula
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
+//LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Move to Dracula's last known location within the trail
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
+//LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID healthCriticalMove(HunterView gameState);
+//LocationID healthCriticalMove(HunterView gameState);
 
 //Stay in the current location if research would be beneficial
 //If Dracula's past location is unknown, and the trail is full then conduct research
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID researchMove(HunterView gameState);
+//LocationID researchMove(HunterView gameState);
 
 
 
@@ -114,7 +114,7 @@ void decideHunterMove(HunterView gameState)
 
     //Make a single-step move
     singleMove(gameState, possibleDestinations, numLocations);
-
+/*
     //Stay in the current location if health is low
     if (healthCriticalMove(gameState) == hunterLocation) {
         return;
@@ -124,7 +124,7 @@ void decideHunterMove(HunterView gameState)
     if (researchMove(gameState) == hunterLocation) {
         return;
     }
-
+*/
     //Generate map of Europe
     Map europe;
     europe = newMap();
@@ -134,7 +134,7 @@ void decideHunterMove(HunterView gameState)
     if (DEBUG) {
         printf("europe is: %p\n", europe);
     }
-
+/*
     //Make a move in the shortest path towards Dracula
     shortestMove(gameState, possibleDestinations, numLocations, europe);
 
@@ -145,7 +145,7 @@ void decideHunterMove(HunterView gameState)
     if (DEBUG) {
         printf("decideHunterMove exited\n");
     }
-    
+*/
 }
  
 //Make a pre-determined move for the first round
@@ -233,6 +233,7 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
     return UNKNOWN_LOCATION;
 }
 
+/*
 //Make a move that is the first step of the shortest path to dracula
 LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe)
 {
@@ -298,6 +299,7 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
         return UNKNOWN_LOCATION;
     }
 }    
+*/
 
 //Move to Dracula's last known location within the trail
 LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe)
@@ -373,6 +375,8 @@ LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[]
         return UNKNOWN_LOCATION;
     }
 }
+
+/*
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
@@ -472,3 +476,4 @@ LocationID researchMove(HunterView gameState) {
     return hunterLocation;
 
 }
+*/
