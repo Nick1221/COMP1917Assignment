@@ -8,37 +8,46 @@
 #include "Game.h"
 #include "HunterView.h"
 #include "Map.h"
-//#include "hunter.h"
 #include "Places.h"
 
 //Enable DEBUG mode (0 = FALSE, 1 = TRUE)
-#define DEBUG 1 
+#define DEBUG 1
 
 //Set Health lower limit
 #define HEALTH_CRITICAL 2
 
+//Set starting positions
+#define POSITION_0 69
+#define POSITION_1 22
+#define POSITION_2 70
+#define POSITION_3 70
 
 // New Functions
+
+//Make a pre-determined move for the first round
+//Makes the move as defined via #define at the start of file
+//Returns the locationID corresponding to the Location Initials registered
+LocationID firstMove(HunterView gameState);
 
 //Make a move at random from all possible moves   
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
+LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations);
 
 //Make a move if Dracula's current location is within the Hunter's possible moves 
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int numLocations);
+LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations);
 
 //Make a move that is the first step of the shortest path to dracula
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe);
+LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Move to Dracula's last known location within the trail
 //If a valid move if found, function calls registerBestPlay()
 //Returns the locationID correpsonding to the Location Initials registered
-LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe);
+LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
@@ -66,16 +75,27 @@ void decideHunterMove(HunterView gameState)
         printf("decideHunterMove entered\n");
     }
 
+    //DEBUG
+    if (DEBUG) {
+        Round currentRound = giveMeTheRound(gameState);
+        printf("Round is: %d\n", currentRound);
+    }
+
+    //Special move for the first round
+    if (giveMeTheRound(gameState) == 0) {
+        firstMove(gameState);
+        return;
+    }
+
     //Determine all possible moves
-    int numLocations;
-    LocationID *possibleDestinations; 
-    possibleDestinations = whereCanIgo(gameState, &numLocations, 1, 1, 1);
+    int *numLocations = malloc(sizeof(int));
+    LocationID *possibleDestinations = whereCanIgo(gameState, &numLocations[0], 1, 1, 1); 
 
     //DEBUG
     if (DEBUG) {
-        printf("numLocations is: %d\n", numLocations);
+        printf("numLocations is: %d\n", numLocations[0]);
         int debugCounter;
-        for (debugCounter = 0; debugCounter < numLocations; debugCounter++) {
+        for (debugCounter = 0; debugCounter < numLocations[0]; debugCounter++) {
             printf("possibleDestinations[%d] is: %d\n", debugCounter, possibleDestinations[debugCounter]);
         }
     }
@@ -128,8 +148,33 @@ void decideHunterMove(HunterView gameState)
     
 }
  
+//Make a pre-determined move for the first round
+LocationID firstMove(HunterView gameState) {
+
+    //Determine hunterID
+    PlayerID hunter = whoAmI(gameState);
+
+    //Register appropriate best move
+    if (hunter == 0) {
+        registerBestPlay(idToAbbrev(POSITION_0), "First Move...");
+        return POSITION_0;
+    } else if (hunter == 1) {
+        registerBestPlay(idToAbbrev(POSITION_1), "First Move...");
+        return POSITION_1;
+    } else if (hunter == 2) {
+        registerBestPlay(idToAbbrev(POSITION_2), "First Move...");
+        return POSITION_2;
+    } else if (hunter == 3) {
+        registerBestPlay(idToAbbrev(POSITION_3), "First Move...");
+        return POSITION_3;
+    }
+
+    return UNKNOWN_LOCATION;
+
+}
+
 //Make a move at random from all possible moves   
-LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int numLocations) 
+LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations) 
 {
     //DEBUG
     if (DEBUG) {
@@ -138,7 +183,7 @@ LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], i
 
     //Generate random number
     srand(time(NULL));
-    int randomDestination = rand() % numLocations;
+    int randomDestination = rand() % numLocations[0];
 
     //DEBUG
     if (DEBUG) {
@@ -159,7 +204,7 @@ LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], i
 
 
 //Make a move if Dracula's current location is within the Hunter's possible moves    
-LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int numLocations) 
+LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations) 
 {
     //DEBUG
     if (DEBUG) {
@@ -172,7 +217,7 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
 
     //Loop through possibleDestinations to find a match for Dracula's location
     int i;
-    for (i = 0; i < numLocations; i++) {
+    for (i = 0; i < numLocations[0]; i++) {
         if (draculaLocation == possibleDestinations[i]) {
             registerBestPlay(idToAbbrev(possibleDestinations[i]), "Single Move...");
             return possibleDestinations[i];
@@ -189,7 +234,7 @@ LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], i
 }
 
 //Make a move that is the first step of the shortest path to dracula
-LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe)
+LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe)
 {
     //DEBUG
     if (DEBUG) {
@@ -255,7 +300,7 @@ LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[],
 }    
 
 //Move to Dracula's last known location within the trail
-LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int numLocations, Map europe)
+LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe)
 {
     //DEBUG
     if (DEBUG) {
