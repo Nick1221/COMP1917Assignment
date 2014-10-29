@@ -1,0 +1,57 @@
+Using username "z3414551".
+
+                       You are using a computer owned by
+ University of New South Wales  -  School of Computer Science and Engineering
+
+
+
+           ***** This service is for authorised clients only *****
+
+ ****************************************************************************
+ *                                                                          *
+ * WARNING:     It is a criminal offence to:                                *
+ *                                                                          *
+ *              i.  Obtain access to data without permission                *
+ *                        (Penalty 2 years imprisonment)                    *
+ *              ii. Damage, delete, alter or insert data without permission *
+ *                        (Penalty 10 years imprisonment)                   *
+ *                                                                          *
+ ****************************************************************************
+No mail.
+weill % cd cs1927/ass2/hunt
+weill % mv *.o oldo/
+weill % ls
+DracView.c  Globals.h     Map.c     Queue.h    hunter.c  pl
+DracView.h  HunterView.c  Map.h     dracula    hunter.h  pl.c
+Game.h      HunterView.h  Places.c  dracula.c  oldo      player.c
+GameView.c  Item.h        Places.h  dracula.h  path      team.txt
+GameView.h  Makefile      Queue.c   hunter     path.c
+weill % ~cs1927/bin/dryrun ass2b Makefile *.c *.h | less
+
+[1]+  Stopped                 ~cs1927/bin/dryrun ass2b Makefile *.c *.h | less
+weill % md5sum *.c *.h Makefile
+0467dd4f7fb1c75dc82a5ef8cc879bd7  DracView.c
+c87e5672233f01bfe61ff4de3eaf7e59  GameView.c
+8a3f4a839a8a46b1dee8d889d96a8111  HunterView.c
+fbaaf2ab64d9f68bd19a8017cfdfee26  Map.c
+93d2ab4fe3828d6d187b58eec86736f5  Places.c
+4dd6af93ff4b9e9357373236bb4a98bf  Queue.c
+1e3a0d2d6df55aa996951bbf97b0e823  dracula.c
+514c568b8fd8a4db2073f746b5e891a0  hunter.c
+bf61eca089f86144ce181a84c48c3ef2  path.c
+39a64832437096b7179c280867380e69  pl.c
+e725fa6f8ca3371333da4c89ba57e46c  player.c
+91a7bcbb1c7d0b335c22b46541be1896  DracView.h
+b17236bf6c47587b8f27414619109e68  Game.h
+b2121e9f06ba4ea6bea4d858ca286633  GameView.h
+2d3eeac4ed1d4becfd72908d73e37c5c  Globals.h
+18f25a0f1f4f058484b971e0233a0c06  HunterView.h
+637a5f92157a8f679451e1051e24f959  Item.h
+40f3cee9434f3e96c01318bb817c3a4e  Map.h
+119fc8a2ce9302bbb3a46bf1cceb328e  Places.h
+c0216dd89e0b1cd31ab871b490846f1b  Queue.h
+a5c62e2a896390562b8aca56197c04ef  dracula.h
+508ebe6c6179e3912698c22ee80eabdc  hunter.h
+329524fac5fcb5eb6d95d0b7e314f459  Makefile
+weill % 
+
