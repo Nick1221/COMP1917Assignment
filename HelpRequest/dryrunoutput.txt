@@ -1,0 +1,382 @@
+Using username "z3414551".
+
+                       You are using a computer owned by
+ University of New South Wales  -  School of Computer Science and Engineering
+
+
+
+           ***** This service is for authorised clients only *****
+
+ ****************************************************************************
+ *                                                                          *
+ * WARNING:     It is a criminal offence to:                                *
+ *                                                                          *
+ *              i.  Obtain access to data without permission                *
+ *                        (Penalty 2 years imprisonment)                    *
+ *              ii. Damage, delete, alter or insert data without permission *
+ *                        (Penalty 10 years imprisonment)                   *
+ *                                                                          *
+ ****************************************************************************
+No mail.
+wagner % cd cs1927/ass2/hunt
+wagner % ls
+DracView.c  GameView.h    Item.h    Places.c  dracula    hunter.c  player.c
+DracView.h  Globals.h     Makefile  Places.h  dracula.c  hunter.h  team.txt
+Game.h      HunterView.c  Map.c     Queue.c   dracula.h  path.c
+GameView.c  HunterView.h  Map.h     Queue.h   hunter     pl.c
+wagner % ls
+DracView.c  GameView.h    Item.h    Places.c  dracula    hunter.c  player.c
+DracView.h  Globals.h     Makefile  Places.h  dracula.c  hunter.h  team.txt
+Game.h      HunterView.c  Map.c     Queue.c   dracula.h  path.c
+GameView.c  HunterView.h  Map.h     Queue.h   hunter     pl.c
+wagner % ~cs1927/bin/dryrun ass2b Makefile *.c *.h
+
+Checking your files...
+Makefile
+
+dracula.c
+
+hunter.c
+
+GameView.c
+
+GameView.h
+
+HunterView.c
+
+HunterView.h
+
+DracView.c
+
+DracView.h
+
+Makefile
+
+DracView.c
+
+GameView.c
+
+HunterView.c
+
+Map.c
+
+Places.c
+
+Queue.c
+
+dracula.c
+
+hunter.c
+
+path.c
+
+pl.c
+
+player.c
+
+DracView.h
+
+Game.h
+
+GameView.h
+
+Globals.h
+
+HunterView.h
+
+Item.h
+
+Map.h
+
+Places.h
+
+Queue.h
+
+dracula.h
+
+hunter.h
+
+Archive:  /home/cs1927ass/14s2.dracula/supplied/hunt.zip
+  inflating: DracView.c
+  inflating: DracView.h
+  inflating: Game.h
+  inflating: GameView.c
+  inflating: GameView.h
+  inflating: Globals.h
+  inflating: HunterView.c
+  inflating: HunterView.h
+  inflating: Makefile
+  inflating: Map.c
+  inflating: Map.h
+  inflating: Places.c
+  inflating: Places.h
+  inflating: dracula.c
+  inflating: dracula.h
+  inflating: hunter.c
+  inflating: hunter.h
+  inflating: player.c
+=== Modified Makefile
+# Makefile for "Fury of Dracula": The Hunt
+
+# change these to suit your local C environment
+CC = gcc
+CFLAGS = -Wall -Werror
+# do not change the following line
+BINS = dracula hunter pl path
+# add any other *.o files that your system requires
+# (and add their dependencies below after DracView.o)
+# if you're not using Map.o or Places.o, you can remove them
+OBJS = GameView.o Map.o Places.o Queue.o
+# add whatever system libraries you need here (e.g. -lm)
+ -ljansson
+
+all : $(BINS)
+
+ -ljanssondracPlayer.o dracula.o DracView.o $(OBJS) $(LIBS)
+ -ljanssonunterPlayer.o hunter.o HunterView.o $(OBJS) $(LIBS)
+
+dracPlayer.o : player.c Game.h DracView.h dracula.h
+        $(CC)  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+
+hunterPlayer.o : player.c Game.h HunterView.h hunter.h
+        $(CC)  -c player.c -o hunterPlayer.o
+
+dracula.o : dracula.c Game.h DracView.h
+hunter.o : hunter.c Game.h HunterView.h
+Places.o : Places.c Places.h
+Map.o : Map.c Map.h Places.h
+GameView.o : GameView.c Globals.h GameView.h
+HunterView.o : HunterView.c Globals.h HunterView.h
+DracView.o : DracView.c Globals.h DracView.h
+# if you use other ADTs, add dependencies for them here
+
+# Queue.c and assorted elements from Lab9
+Queue.o : Queue.c Queue.h Item.h
+path : path.o Map.o Places.o Queue.o
+path.o : path.c Map.c Places.h
+pl : pl.o Places.o
+pl.o : pl.c Places.h
+
+clean :
+        rm -f $(BINS) *.o core
+
+
+=== Compiling Dracula ...
+gcc -Wall -Werror   -c -o dracula.o dracula.c
+gcc  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+gcc -Wall -Werror   -c -o DracView.o DracView.c
+gcc -Wall -Werror   -c -o GameView.o GameView.c
+gcc -Wall -Werror   -c -o Map.o Map.c
+gcc -Wall -Werror   -c -o Places.o Places.c
+gcc -Wall -Werror   -c -o Queue.o Queue.c
+', needed by `dracula'.  Stop.et `
+Dracula AI didn't compile
+=== Compiling Hunter ...
+gcc -Wall -Werror   -c -o hunter.o hunter.c
+gcc  -c player.c -o hunterPlayer.o
+gcc -Wall -Werror   -c -o HunterView.o HunterView.c
+', needed by `hunter'.  Stop.get `
+Hunter AI didn't compile
+
+=== Nothing more to do without both a Hunter and a Dracula
+
+
+wagner % mkdir oldo
+wagner % mv *.o oldo/
+mv: cannot stat `*.o': No such file or directory
+wagner % make
+gcc -Wall -Werror   -c -o dracula.o dracula.c
+gcc -Wall -Werror -DI_AM_DRACULA -c player.c -o dracPlayer.o
+gcc -Wall -Werror   -c -o DracView.o DracView.c
+gcc -Wall -Werror   -c -o GameView.o GameView.c
+gcc -Wall -Werror   -c -o Map.o Map.c
+gcc -Wall -Werror   -c -o Places.o Places.c
+gcc -Wall -Werror   -c -o Queue.o Queue.c
+gcc   dracula.o dracPlayer.o DracView.o GameView.o Map.o Places.o Queue.o   -o d                                                                                                             racula
+gcc -Wall -Werror   -c -o hunter.o hunter.c
+gcc -Wall -Werror -c player.c -o hunterPlayer.o
+gcc -Wall -Werror   -c -o HunterView.o HunterView.c
+gcc   hunter.o hunterPlayer.o HunterView.o GameView.o Map.o Places.o Queue.o   -                                                                                                             o hunter
+gcc -Wall -Werror   -c -o pl.o pl.c
+gcc   pl.o Places.o   -o pl
+gcc -Wall -Werror   -c -o path.o path.c
+gcc   path.o Map.o Places.o Queue.o   -o path
+wagner % mkdir oldo
+mkdir: cannot create directory `oldo': File exists
+wagner % mv *.o oldo/
+wagner % ls
+DracView.c  Globals.h     Map.c     Queue.h    hunter.c  pl
+DracView.h  HunterView.c  Map.h     dracula    hunter.h  pl.c
+Game.h      HunterView.h  Places.c  dracula.c  oldo      player.c
+GameView.c  Item.h        Places.h  dracula.h  path      team.txt
+GameView.h  Makefile      Queue.c   hunter     path.c
+wagner % make
+gcc -Wall -Werror   -c -o dracula.o dracula.c
+gcc -Wall -Werror -DI_AM_DRACULA -c player.c -o dracPlayer.o
+gcc -Wall -Werror   -c -o DracView.o DracView.c
+gcc -Wall -Werror   -c -o GameView.o GameView.c
+gcc -Wall -Werror   -c -o Map.o Map.c
+gcc -Wall -Werror   -c -o Places.o Places.c
+gcc -Wall -Werror   -c -o Queue.o Queue.c
+gcc   dracula.o dracPlayer.o DracView.o GameView.o Map.o Places.o Queue.o   -o d                                                                                                             racula
+gcc -Wall -Werror   -c -o hunter.o hunter.c
+gcc -Wall -Werror -c player.c -o hunterPlayer.o
+gcc -Wall -Werror   -c -o HunterView.o HunterView.c
+gcc   hunter.o hunterPlayer.o HunterView.o GameView.o Map.o Places.o Queue.o   -                                                                                                             o hunter
+gcc -Wall -Werror   -c -o pl.o pl.c
+gcc   pl.o Places.o   -o pl
+gcc -Wall -Werror   -c -o path.o path.c
+gcc   path.o Map.o Places.o Queue.o   -o path
+wagner % ~cs1927/bin/dryrun ass2b Makefile *.c *.h
+
+Checking your files...
+Makefile
+
+dracula.c
+
+hunter.c
+
+GameView.c
+
+GameView.h
+
+HunterView.c
+
+HunterView.h
+
+DracView.c
+
+DracView.h
+
+Makefile
+
+DracView.c
+
+GameView.c
+
+HunterView.c
+
+Map.c
+
+Places.c
+
+Queue.c
+
+dracula.c
+
+hunter.c
+
+path.c
+
+pl.c
+
+player.c
+
+DracView.h
+
+Game.h
+
+GameView.h
+
+Globals.h
+
+HunterView.h
+
+Item.h
+
+Map.h
+
+Places.h
+
+Queue.h
+
+dracula.h
+
+hunter.h
+
+Archive:  /home/cs1927ass/14s2.dracula/supplied/hunt.zip
+  inflating: DracView.c
+  inflating: DracView.h
+  inflating: Game.h
+  inflating: GameView.c
+  inflating: GameView.h
+  inflating: Globals.h
+  inflating: HunterView.c
+  inflating: HunterView.h
+  inflating: Makefile
+  inflating: Map.c
+  inflating: Map.h
+  inflating: Places.c
+  inflating: Places.h
+  inflating: dracula.c
+  inflating: dracula.h
+  inflating: hunter.c
+  inflating: hunter.h
+  inflating: player.c
+=== Modified Makefile
+# Makefile for "Fury of Dracula": The Hunt
+
+# change these to suit your local C environment
+CC = gcc
+CFLAGS = -Wall -Werror
+# do not change the following line
+BINS = dracula hunter pl path
+# add any other *.o files that your system requires
+# (and add their dependencies below after DracView.o)
+# if you're not using Map.o or Places.o, you can remove them
+OBJS = GameView.o Map.o Places.o Queue.o
+# add whatever system libraries you need here (e.g. -lm)
+ -ljansson
+
+all : $(BINS)
+
+ -ljanssondracPlayer.o dracula.o DracView.o $(OBJS) $(LIBS)
+ -ljanssonunterPlayer.o hunter.o HunterView.o $(OBJS) $(LIBS)
+
+dracPlayer.o : player.c Game.h DracView.h dracula.h
+        $(CC)  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+
+hunterPlayer.o : player.c Game.h HunterView.h hunter.h
+        $(CC)  -c player.c -o hunterPlayer.o
+
+dracula.o : dracula.c Game.h DracView.h
+hunter.o : hunter.c Game.h HunterView.h
+Places.o : Places.c Places.h
+Map.o : Map.c Map.h Places.h
+GameView.o : GameView.c Globals.h GameView.h
+HunterView.o : HunterView.c Globals.h HunterView.h
+DracView.o : DracView.c Globals.h DracView.h
+# if you use other ADTs, add dependencies for them here
+
+# Queue.c and assorted elements from Lab9
+Queue.o : Queue.c Queue.h Item.h
+path : path.o Map.o Places.o Queue.o
+path.o : path.c Map.c Places.h
+pl : pl.o Places.o
+pl.o : pl.c Places.h
+
+clean :
+        rm -f $(BINS) *.o core
+
+
+=== Compiling Dracula ...
+gcc -Wall -Werror   -c -o dracula.o dracula.c
+gcc  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+gcc -Wall -Werror   -c -o DracView.o DracView.c
+gcc -Wall -Werror   -c -o GameView.o GameView.c
+gcc -Wall -Werror   -c -o Map.o Map.c
+gcc -Wall -Werror   -c -o Places.o Places.c
+gcc -Wall -Werror   -c -o Queue.o Queue.c
+', needed by `dracula'.  Stop.et `
+Dracula AI didn't compile
+=== Compiling Hunter ...
+gcc -Wall -Werror   -c -o hunter.o hunter.c
+gcc  -c player.c -o hunterPlayer.o
+gcc -Wall -Werror   -c -o HunterView.o HunterView.c
+', needed by `hunter'.  Stop.get `
+Hunter AI didn't compile
+
+=== Nothing more to do without both a Hunter and a Dracula
+
+
+wagner %
