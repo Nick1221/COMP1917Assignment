@@ -22,7 +22,7 @@
 #define POSITION_2 70
 #define POSITION_3 70
 
-// New Functions
+// New Functions h
 
 //Make a pre-determined move for the first round
 //Makes the move as defined via #define at the start of file
