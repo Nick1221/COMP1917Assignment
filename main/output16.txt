@@ -1,0 +1,1483 @@
+
+Checking your files...
+Makefile
+
+dracula.c
+
+hunter.c
+
+GameView.c
+
+GameView.h
+
+HunterView.c
+
+HunterView.h
+
+DracView.c
+
+DracView.h
+
+Makefile
+
+DracView.c
+
+GameView.c
+
+HunterView.c
+
+Map.c
+
+Places.c
+
+Queue.c
+
+dracula.c
+
+hunter.c
+
+path.c
+
+pl.c
+
+player.c
+
+DracView.h
+
+Game.h
+
+GameView.h
+
+Globals.h
+
+HunterView.h
+
+Item.h
+
+Map.h
+
+Places.h
+
+Queue.h
+
+dracula.h
+
+hunter.h
+
+Archive:  /home/cs1927ass/14s2.dracula/supplied/hunt.zip
+  inflating: DracView.c              
+  inflating: DracView.h              
+  inflating: Game.h                  
+  inflating: GameView.c              
+  inflating: GameView.h              
+  inflating: Globals.h               
+  inflating: HunterView.c            
+  inflating: HunterView.h            
+  inflating: Makefile                
+  inflating: Map.c                   
+  inflating: Map.h                   
+  inflating: Places.c                
+  inflating: Places.h                
+  inflating: dracula.c               
+  inflating: dracula.h               
+  inflating: hunter.c                
+  inflating: hunter.h                
+  inflating: player.c                
+=== Modified Makefile
+# Makefile for "Fury of Dracula": The Hunt
+
+# change these to suit your local C environment
+CC = gcc
+CFLAGS = -Wall -Werror -g -pg
+# do not change the following line
+BINS = dracula hunter pl path
+# add any other *.o files that your system requires
+# (and add their dependencies below after DracView.o)
+# if you're not using Map.o or Places.o, you can remove them
+OBJS = GameView.o Map.o Places.o Queue.o
+# add whatever system libraries you need here (e.g. -lm)
+LIBS =  -ljansson
+
+all : $(BINS)
+
+dracula : dracPlayer.o dracula.o DracView.o $(OBJS) $(LIBS) -ljansson
+hunter : hunterPlayer.o hunter.o HunterView.o $(OBJS) $(LIBS)  -ljansson
+
+dracPlayer.o : player.c Game.h DracView.h dracula.h
+	$(CC)  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+
+hunterPlayer.o : player.c Game.h HunterView.h hunter.h
+	$(CC)  -c player.c -o hunterPlayer.o
+
+dracula.o : dracula.c Game.h DracView.h 
+hunter.o : hunter.c Game.h HunterView.h 
+Places.o : Places.c Places.h
+Map.o : Map.c Map.h Places.h
+GameView.o : GameView.c Globals.h GameView.h
+HunterView.o : HunterView.c Globals.h HunterView.h
+DracView.o : DracView.c Globals.h DracView.h
+# if you use other ADTs, add dependencies for them here
+
+# Queue.c and assorted elements from Lab9
+Queue.o : Queue.c Queue.h Item.h  
+path : path.o Map.o Places.o Queue.o
+path.o : path.c Map.c Places.h 
+pl : pl.o Places.o
+pl.o : pl.c Places.h
+
+clean :
+	rm -f $(BINS) *.o core
+
+
+=== Compiling Dracula ...
+gcc -Wall -Werror -g -pg   -c -o dracula.o dracula.c
+gcc  -DI_AM_DRACULA -c player.c -o dracPlayer.o
+gcc -Wall -Werror -g -pg   -c -o DracView.o DracView.c
+gcc -Wall -Werror -g -pg   -c -o GameView.o GameView.c
+gcc -Wall -Werror -g -pg   -c -o Map.o Map.c
+gcc -Wall -Werror -g -pg   -c -o Places.o Places.c
+gcc -Wall -Werror -g -pg   -c -o Queue.o Queue.c
+gcc   dracula.o dracPlayer.o DracView.o GameView.o Map.o Places.o Queue.o /usr/lib/libjansson.so   -o dracula
+Dracula AI compiled OK
+=== Compiling Hunter ...
+gcc -Wall -Werror -g -pg   -c -o hunter.o hunter.c
+gcc  -c player.c -o hunterPlayer.o
+gcc -Wall -Werror -g -pg   -c -o HunterView.o HunterView.c
+gcc   hunter.o hunterPlayer.o HunterView.o GameView.o Map.o Places.o Queue.o /usr/lib/libjansson.so   -o hunter
+Hunter AI compiled OK
+
+=== Playing your Hunter against your Dracula ...
+
+   The FURY of DRACULA   
+          _..._          
+        .'     '.        
+       ; __   __ ;       
+       |/  \ /  \|       
+     |\| -- ' -- |/|     
+     |(| \o| |o/ |)|     
+     _\|    U    |/_     
+  .-'  | ,.___., |  '-.  
+  \    ;  V'-'V  ;    /  
+   `\   \       /   /`   
+     `\  '-...-'  /`     
+       `\  / \  /`       
+         `\\_//`         
+...........................
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "",
+  "messages": []
+}
+Program Output: 
+Move:  {
+  "move": "MU",
+  "message": "First Move...",
+  "timer": 58
+}
+> Moving from: undefined
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: MU
+  message: First Move...
+  timer: 58
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU....",
+  "messages": [
+    "First Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MA",
+  "message": "First Move...",
+  "timer": 57
+}
+> Moving from: undefined
+> Life Points: 9
+> Player 1 made move:
+> +++
+  move: MA
+  message: First Move...
+  timer: 57
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA....",
+  "messages": [
+    "First Move...",
+    "First Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MN",
+  "message": "First Move...",
+  "timer": 55
+}
+> Moving from: undefined
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: MN
+  message: First Move...
+  timer: 55
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "First Move...",
+  "timer": 55
+}
+> Moving from: undefined
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: First Move...
+  timer: 55
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Hello my dears",
+  "timer": 38910
+}
+> Moving from: undefined
+> Blood Points: 40
+> Player 4 made move:
+> +++
+  move: AL
+  message: Hello my dears
+  timer: 38910
+> ---
+> End of Round:  0
+> Starting Round:  1
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DC?.V..",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MU",
+  "message": "Random Move...",
+  "timer": 10283
+}
+> Moving from: MU
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: MU
+  message: Random Move...
+  timer: 10283
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DC?.V.. GMU....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Random Move...",
+  "timer": 10116
+}
+> Moving from: MA
+> Life Points: 9
+> Player 1 made move:
+> +++
+  move: AL
+  message: Random Move...
+  timer: 10116
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD..",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "LO",
+  "message": "Last Known Move...",
+  "timer": 10281
+}
+> Moving from: MN
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: LO
+  message: Last Known Move...
+  timer: 10281
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "Staying at Mount Doom...",
+  "timer": 9932
+}
+> Moving from: CD
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: Staying at Mount Doom...
+  timer: 9932
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "GR",
+  "message": "Hello my dears",
+  "timer": 54495
+}
+> Moving from: AL
+> Blood Points: 30
+> Player 4 made move:
+> +++
+  move: GR
+  message: Hello my dears
+  timer: 54495
+> ---
+> End of Round:  1
+> Starting Round:  2
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "ZU",
+  "message": "Last Known Move...",
+  "timer": 10367
+}
+> Moving from: MU
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: ZU
+  message: Last Known Move...
+  timer: 10367
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Random Move...",
+  "timer": 10785
+}
+> Moving from: AL
+> Life Points: 5
+> Player 1 made move:
+> +++
+  move: AL
+  message: Random Move...
+  timer: 10785
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "EC",
+  "message": "Last Known Move...",
+  "timer": 10002
+}
+> Moving from: LO
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: EC
+  message: Last Known Move...
+  timer: 10002
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "Staying at Mount Doom...",
+  "timer": 10720
+}
+> Moving from: CD
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: Staying at Mount Doom...
+  timer: 10720
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DGRT... GZU.... SAL.... HEC.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CA",
+  "message": "Hello my dears",
+  "timer": 49839
+}
+AL illegal
+Location AL already in trail
+> Moving from: GR
+> Blood Points: 30
+AL illegal
+Location AL already in trail
+AL illegal
+Location AL already in trail
+> Player 4 made move:
+> +++
+  move: CA
+  message: Hello my dears
+  timer: 49839
+> ---
+> End of Round:  2
+> Starting Round:  3
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MR",
+  "message": "Last Known Move...",
+  "timer": 10197
+}
+> Moving from: ZU
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: MR
+  message: Last Known Move...
+  timer: 10197
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MA",
+  "message": "Random Move...",
+  "timer": 10201
+}
+> Moving from: AL
+> Life Points: 8
+> Player 1 made move:
+> +++
+  move: MA
+  message: Random Move...
+  timer: 10201
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AO",
+  "message": "Last Known Move...",
+  "timer": 13499
+}
+> Moving from: EC
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: AO
+  message: Last Known Move...
+  timer: 13499
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "Staying at Mount Doom...",
+  "timer": 10314
+}
+> Moving from: CD
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: Staying at Mount Doom...
+  timer: 10314
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DGRT... GZU.... SAL.... HEC.... MCD.... DCAT... GMR.... SMA.... HAO.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "LS",
+  "message": "Hello my dears",
+  "timer": 48947
+}
+GR illegal
+Location GR already in trail
+> Moving from: CA
+> Blood Points: 30
+GR illegal
+Location GR already in trail
+GR illegal
+Location GR already in trail
+> Player 4 made move:
+> +++
+  move: LS
+  message: Hello my dears
+  timer: 48947
+> ---
+> End of Round:  3
+> Starting Round:  4
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MS",
+  "message": "Last Known Move...",
+  "timer": 10395
+}
+> Moving from: MR
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: MS
+  message: Last Known Move...
+  timer: 10395
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Last Known Move...",
+  "timer": 10351
+}
+> Moving from: MA
+> Life Points: 8
+> Player 1 made move:
+> +++
+  move: AL
+  message: Last Known Move...
+  timer: 10351
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MS",
+  "message": "Last Known Move...",
+  "timer": 10020
+}
+> Moving from: AO
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: MS
+  message: Last Known Move...
+  timer: 10020
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "Staying at Mount Doom...",
+  "timer": 10206
+}
+> Moving from: CD
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: Staying at Mount Doom...
+  timer: 10206
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DGRT... GZU.... SAL.... HEC.... MCD.... DCAT... GMR.... SMA.... HAO.... MCD.... DLST... GMS.... SAL.... HMS.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "MA",
+  "message": "Hello my dears",
+  "timer": 48914
+}
+CA illegal
+Location CA already in trail
+> Moving from: LS
+> Blood Points: 30
+CA illegal
+Location CA already in trail
+CA illegal
+Location CA already in trail
+> Player 4 made move:
+> +++
+  move: MA
+  message: Hello my dears
+  timer: 48914
+> ---
+> End of Round:  4
+> Starting Round:  5
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Last Known Move...",
+  "timer": 10361
+}
+> Moving from: MS
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: AL
+  message: Last Known Move...
+  timer: 10361
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "BA",
+  "message": "Random Move...",
+  "timer": 10339
+}
+> Moving from: AL
+> Life Points: 8
+> Player 1 made move:
+> +++
+  move: BA
+  message: Random Move...
+  timer: 10339
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL.... SBA....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "AL",
+  "message": "Last Known Move...",
+  "timer": 10094
+}
+> Moving from: MS
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: AL
+  message: Last Known Move...
+  timer: 10094
+> ---
+--------------------------------------------------------------------------
+> Running player 3... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL.... SBA.... HAL....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "CD",
+  "message": "Staying at Mount Doom...",
+  "timer": 10284
+}
+> Moving from: CD
+> Life Points: 9
+> Player 3 made move:
+> +++
+  move: CD
+  message: Staying at Mount Doom...
+  timer: 10284
+> ---
+--------------------------------------------------------------------------
+> Running player 4... 
+/tmp/dryrun4297/dracula
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DGRT... GZU.... SAL.... HEC.... MCD.... DCAT... GMR.... SMA.... HAO.... MCD.... DLST... GMS.... SAL.... HMS.... MCD.... DMAT... GAL.... SBA.... HAL.... MCD....",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "SR",
+  "message": "Hello my darlings",
+  "timer": 29240
+}
+AL illegal
+Location AL already in trail
+CA illegal
+Location CA already in trail
+GR illegal
+Location GR already in trail
+LS illegal
+Location LS already in trail
+> Moving from: MA
+> Blood Points: 30
+AL illegal
+Location AL already in trail
+CA illegal
+Location CA already in trail
+GR illegal
+Location GR already in trail
+LS illegal
+Location LS already in trail
+AL illegal
+Location AL already in trail
+CA illegal
+Location CA already in trail
+GR illegal
+Location GR already in trail
+LS illegal
+Location LS already in trail
+> Player 4 made move:
+> +++
+  move: SR
+  message: Hello my darlings
+  timer: 29240
+> ---
+> End of Round:  5
+> Starting Round:  6
+--------------------------------------------------------------------------
+> Running player 0... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL.... SBA.... HAL.... MCD.... DC?T...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my darlings"
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "SR",
+  "message": "Random Move...",
+  "timer": 10716
+}
+> Moving from: AL
+> Life Points: 9
+> Player 0 made move:
+> +++
+  move: SR
+  message: Random Move...
+  timer: 10716
+> ---
+--------------------------------------------------------------------------
+> Running player 1... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL.... SBA.... HAL.... MCD.... DSRT... GSRTD..",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my darlings",
+    "Random Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "SR",
+  "message": "Shortest Move...",
+  "timer": 15032
+}
+> Moving from: BA
+> Life Points: 8
+> Player 1 made move:
+> +++
+  move: SR
+  message: Shortest Move...
+  timer: 15032
+> ---
+--------------------------------------------------------------------------
+> Running player 2... 
+/tmp/dryrun4297/hunter
+Running with input:  {
+  "pastPlays": "GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DC?T... GZU.... SAL.... HEC.... MCD.... DC?T... GMR.... SMA.... HAO.... MCD.... DC?T... GMS.... SAL.... HMS.... MCD.... DC?T... GAL.... SBA.... HAL.... MCD.... DSRT... GSRTD.. SSRD...",
+  "messages": [
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "First Move...",
+    "Hello my dears",
+    "Random Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my dears",
+    "Last Known Move...",
+    "Random Move...",
+    "Last Known Move...",
+    "Staying at Mount Doom...",
+    "Hello my darlings",
+    "Random Move...",
+    "Shortest Move..."
+  ]
+}
+Program Output: 
+Move:  {
+  "move": "SR",
+  "message": "Shortest Move...",
+  "timer": 10343
+}
+> Moving from: AL
+> Life Points: 9
+> Player 2 made move:
+> +++
+  move: SR
+  message: Shortest Move...
+  timer: 10343
+> ---
+--------------------------------------------------------------------------
+> End of game: 
+> +++
+  score: 360
+  revealedPastPlays: GMU.... SMA.... HMN.... MCD.... DAL.V.. GMU.... SALVD.. HLO.... MCD.... DGRT... GZU.... SAL.... HEC.... MCD.... DCAT... GMR.... SMA.... HAO.... MCD.... DLST... GMS.... SAL.... HMS.... MCD.... DMAT... GAL.... SBA.... HAL.... MCD.... DSRT... GSRTD.. SSRD... HSRD...
+  messages: ["First Move...","First Move...","First Move...","First Move...","Hello my dears","Random Move...","Random Move...","Last Known Move...","Staying at Mount Doom...","Hello my dears","Last Known Move...","Random Move...","Last Known Move...","Staying at Mount Doom...","Hello my dears","Last Known Move...","Random Move...","Last Known Move...","Staying at Mount Doom...","Hello my dears","Last Known Move...","Last Known Move...","Last Known Move...","Staying at Mount Doom...","Hello my dears","Last Known Move...","Random Move...","Last Known Move...","Staying at Mount Doom...","Hello my darlings","Random Move...","Shortest Move...","Shortest Move..."]
+> ---
+> Game Over
+undefined
+6
+

@@ -263,11 +263,13 @@ int shortestPath(Map g, LocationID start, LocationID end, LocationID path[], Tra
    free(stTrans);
    dropQueue(q);
 
+   /*
    //DEBUG
    for (j = 0; j < i; j++ ) {
       printf("Location %d\n", path[j]);
    }
-
+  */
+   
    // Return length of path array
    return i;
 
