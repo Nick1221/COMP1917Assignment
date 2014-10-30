@@ -31,35 +31,38 @@ LocationID firstMove(HunterView gameState);
 
 //Make a move at random from all possible moves   
 //If a valid move if found, function calls registerBestPlay()
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID randomMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations);
 
 //Make a move if Dracula's current location is within the Hunter's possible moves 
 //If a valid move if found, function calls registerBestPlay()
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID singleMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations);
 
 //Make a move that is the first step of the shortest path to dracula
 //If a valid move if found, function calls registerBestPlay()
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID shortestMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Move to Dracula's last known location within the trail
 //If a valid move if found, function calls registerBestPlay()
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 //Stay in the current location if health is low
 //If hunter's health is below HEALTH_CRITICAL, then they will rest and regain 3 health
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID healthCriticalMove(HunterView gameState);
 
 //Stay in the current location if research would be beneficial
 //If Dracula's past location is unknown, and the trail is full then conduct research
-//Returns the locationID correpsonding to the Location Initials registered
+//Returns the locationID corresponding to the Location Initials registered
 LocationID researchMove(HunterView gameState);
 
-
+//Find the shortest route to Castle Dracula
+//Intended for use by only one hunter
+//Returns the locationID corresponding to the Location Initials registered
+LocationID directCastleMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe);
 
 
 
@@ -87,21 +90,9 @@ void decideHunterMove(HunterView gameState)
         return;
     }
 
-    //Bypass the fact that Gameview.c isn't properly accounting for railMod = 0
-    //https://www.openlearning.com/courses/COMP1927-14s2/FuryOfDracula/Hunt?inCohort=courses/COMP1927-14s2/Cohorts/ClassOf2014#comment-5451be3cf860612b38fbb6a1
-
-    //Determine whether rail is valid or not
-    int railMod;
-    int railModSum = whoAmI(gameState) + giveMeTheRound(gameState);
-    railMod = railModSum % 4;
-    //Simplify railMod to be 0 or 1
-    if (railMod > 0) {
-        railMod = 1;
-    }
-
     //Determine all possible moves
     int *numLocations = malloc(sizeof(int));
-    LocationID *possibleDestinations = whereCanIgo(gameState, &numLocations[0], 1, railMod, 1); 
+    LocationID *possibleDestinations = whereCanIgo(gameState, &numLocations[0], 1, 1, 1); 
 
     //DEBUG
     if (DEBUG) {
@@ -119,6 +110,21 @@ void decideHunterMove(HunterView gameState)
     //DEBUG
     if (DEBUG) {
         printf("hunterLocation is: %d\n", hunterLocation);
+    }
+
+    //If player 3, take the shortest route to Castle Dracula and stay there
+    if (whoAmI(gameState) == PLAYER_MINA_HARKER) {
+
+        //Generate map of Europe
+        Map europe;
+        europe = newMap();
+        assert(europe != NULL);
+
+        //Execute move
+        directCastleMove(gameState, possibleDestinations, numLocations, europe);
+
+        //Abort the AI
+        return;
     }
 
     //Make a move at random
@@ -491,3 +497,58 @@ LocationID researchMove(HunterView gameState) {
 
 }
 
+LocationID directCastleMove(HunterView gameState, LocationID possibleDestinations[], int *numLocations, Map europe) {
+
+    //DEBUG
+    if (DEBUG) {
+        printf("directCastleMove entered\n");            
+    }
+
+    //Determine where Player is
+    LocationID hunterLocation;
+    hunterLocation = whereIs(gameState, whoAmI(gameState));
+
+    //DEBUG
+    if (DEBUG) {
+        printf("hunterLocation is: %d\n", hunterLocation);
+    }
+
+    //If currently at Castle Dracula, stay there
+    if (hunterLocation == CASTLE_DRACULA) {
+        registerBestPlay("CD", "Staying at Mount Doom...");
+        return hunterLocation;
+    }
+
+    //Otherwise, take the first step along the shortest route to the castle
+
+    //Initialise path[] and trans[]
+    LocationID path[NUM_MAP_LOCATIONS];
+    TransportID trans[NUM_MAP_LOCATIONS];
+
+    //DEBUG
+    if (DEBUG) {
+        printf("path[] and trans[] initialised\n");
+    }
+
+    //Call shortestPath
+    shortestPath(europe, hunterLocation, CASTLE_DRACULA, path, trans);
+
+    //DEBUG
+    if (DEBUG) {
+        printf("shortestPath called\n");
+    }
+
+    //Register result
+    registerBestPlay(idToAbbrev(path[1]), "Direct route to Mount Doom...");
+
+    //DEBUG
+    if (DEBUG) {
+        printf("hunterLocation is: %d; CASTLE_DRACULA is: %d\n", hunterLocation, CASTLE_DRACULA);
+        printf("path[0] is: %d; path[1] is: %d\n", path[0], path[1]);
+        printf("directCastleMove successful\n");            
+    }
+
+    //Return first step
+    return path[1];
+
+}
