@@ -406,13 +406,13 @@ static void addConnections(Map g)
     addLink(g, BERLIN, HAMBURG, RAIL);
     addLink(g, BERLIN, LEIPZIG, RAIL);
     addLink(g, BERLIN, PRAGUE, RAIL);
-    addLink(g, BORDEAUX, PARIS, RAIL);
+    //addLink(g, BORDEAUX, PARIS, RAIL);
     addLink(g, BORDEAUX, SARAGOSSA, RAIL);
     addLink(g, BRUSSELS, COLOGNE, RAIL);
     addLink(g, BRUSSELS, PARIS, RAIL);
     addLink(g, BUCHAREST, CONSTANTA, RAIL);
     addLink(g, BUCHAREST, GALATZ, RAIL);
-    addLink(g, BUCHAREST, SZEGED, RAIL);
+    //addLink(g, BUCHAREST, SZEGED, RAIL);
     addLink(g, BUDAPEST, SZEGED, RAIL);
     addLink(g, BUDAPEST, VIENNA, RAIL);
     addLink(g, COLOGNE, FRANKFURT, RAIL);
@@ -421,7 +421,7 @@ static void addConnections(Map g)
     addLink(g, FLORENCE, ROME, RAIL);
     addLink(g, FRANKFURT, LEIPZIG, RAIL);
     addLink(g, FRANKFURT, STRASBOURG, RAIL);
-    addLink(g, GENEVA, MILAN, RAIL);
+    //addLink(g, GENEVA, MILAN, RAIL);
     addLink(g, GENOA, MILAN, RAIL);
     addLink(g, LEIPZIG, NUREMBURG, RAIL);
     addLink(g, LE_HAVRE, PARIS, RAIL);
@@ -431,7 +431,7 @@ static void addConnections(Map g)
     addLink(g, LONDON, SWANSEA, RAIL);
     addLink(g, MADRID, SANTANDER, RAIL);
     addLink(g, MADRID, SARAGOSSA, RAIL);
-    addLink(g, MARSEILLES, PARIS, RAIL);
+    //addLink(g, MARSEILLES, PARIS, RAIL);
     addLink(g, MILAN, ZURICH, RAIL);
     addLink(g, MUNICH, NUREMBURG, RAIL);
     addLink(g, NAPLES, ROME, RAIL);

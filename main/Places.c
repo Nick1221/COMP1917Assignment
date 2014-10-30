@@ -140,10 +140,12 @@ int abbrevToID(char *abbrev)
 
 char *idToAbbrev(int p)
 {
+   /*
    printf("\n");
    printf("This is Places.c talking. Function: idToAbbrev\n");
    printf("int p (the LocationID) is as follows: %d\n", p);
    printf("\n");
+   */
    //assert(validPlace(p));
    if (p > MAX_MAP_LOCATION) {
       return "-1";
