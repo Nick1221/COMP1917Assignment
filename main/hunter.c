@@ -87,9 +87,21 @@ void decideHunterMove(HunterView gameState)
         return;
     }
 
+    //Bypass the fact that Gameview.c isn't properly accounting for railMod = 0
+    //https://www.openlearning.com/courses/COMP1927-14s2/FuryOfDracula/Hunt?inCohort=courses/COMP1927-14s2/Cohorts/ClassOf2014#comment-5451be3cf860612b38fbb6a1
+
+    //Determine whether rail is valid or not
+    int railMod;
+    int railModSum = whoAmI(gameState) + giveMeTheRound(gameState);
+    railMod = railModSum % 4;
+    //Simplify railMod to be 0 or 1
+    if (railMod > 0) {
+        railMod = 1;
+    }
+
     //Determine all possible moves
     int *numLocations = malloc(sizeof(int));
-    LocationID *possibleDestinations = whereCanIgo(gameState, &numLocations[0], 1, 1, 1); 
+    LocationID *possibleDestinations = whereCanIgo(gameState, &numLocations[0], 1, railMod, 1); 
 
     //DEBUG
     if (DEBUG) {

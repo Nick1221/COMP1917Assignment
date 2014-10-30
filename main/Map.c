@@ -439,7 +439,7 @@ static void addConnections(Map g)
     addLink(g, SALONICA, SOFIA, RAIL);
     addLink(g, SOFIA, VARNA, RAIL);
     addLink(g, STRASBOURG, ZURICH, RAIL);
-    addLink(g, VENICE, VIENNA, RAIL);
+    //addLink(g, VENICE, VIENNA, RAIL);
 
     //### BOAT Connections ###
 
