@@ -362,6 +362,21 @@ LocationID lastKnownMove(HunterView gameState, LocationID possibleDestinations[]
         printf("draculaLocation is: %d\n", draculaLocation);
     }
 
+    //Overcome bug of hunter getting stuck at a past location of Dracula's
+    if (draculaLocation == hunterLocation) {
+        return UNKNOWN_LOCATION;
+    }
+
+    //Overcome bug of hunter moving back to a location in his trail
+    LocationID hunterTrail[TRAIL_SIZE];
+    giveMeTheTrail(gameState, whoAmI(gameState), draculaTrail);
+    int j;
+    for (j = 0; j < TRAIL_SIZE; j++) {
+        if (draculaLocation == hunterTrail[j]) {
+            return UNKNOWN_LOCATION;
+        }
+    }
+
     //Return first step along the route to Dracula, or UNKNOWN_LOCATION if invalid
     if (hunterLocation >= MIN_MAP_LOCATION && hunterLocation <= MAX_MAP_LOCATION &&
         draculaLocation >= MIN_MAP_LOCATION && draculaLocation <= MAX_MAP_LOCATION) {
